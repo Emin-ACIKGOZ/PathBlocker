@@ -53,12 +53,12 @@ public class PathBlockerState extends State {
     }
 
     private int getMovementDistance(int dx, int dy) {
-        //Amount of distance travelled in one direction
+        // Amount of distance travelled in one direction
         int distance = 0;
         int x = playerX;
         int y = playerY;
 
-        //Move until the goal or an obstacle is encountered
+        // Move until the goal or an obstacle is encountered
         while (x + dx >= 0 && x + dx < matrix[0].length && y + dy >= 0 && y + dy < matrix.length
                 && !matrix[y + dy][x + dx]) {
             x += dx;
@@ -78,18 +78,12 @@ public class PathBlockerState extends State {
     }
 
     private PathBlockerState movePlayer(int newX, int newY) {
-        //NEEDS TO BE IMPLEMENTED PROPERLY
-        // boolean[][] newMatrix = cloneMatrix();
+        boolean[][] newMatrix = cloneMatrix();
         // Mark current position as visited (true)
-        // newMatrix[playerY][playerX] = true;
+        newMatrix[playerY][playerX] = true;
         // Set new position
-        // return new PathBlockerState(newMatrix, newX, newY, goalX, goalY, );
-        //If the current location of the player matches the goal's location, stop moving and set goalReached to true
-//        if(x == goalX && y == goalY){
-//            goalReached = true;
-//            return distance;
-//        }
-        return null;
+        boolean goalReached = newX == goalX && newY == goalY;
+        return new PathBlockerState(newMatrix, newX, newY, goalX, goalY, goalReached);
     }
 
     private boolean[][] cloneMatrix() {
@@ -103,7 +97,8 @@ public class PathBlockerState extends State {
     @Override
     public State undoAction(Action action) {
         if (action instanceof PathAction) {
-            //needs to be implemented!
+            PathAction pathAction = (PathAction) action;
+            return movePlayer(playerX - pathAction.getDeltaX(), playerY - pathAction.getDeltaY());
         }
         return this;
     }
