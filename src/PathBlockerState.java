@@ -64,12 +64,6 @@ public class PathBlockerState extends State {
             x += dx;
             y += dy;
             distance++;
-
-            //If the current location of the player matches the goal's location, stop moving and set goalReached to true
-            if(x == goalX && y == goalY){
-                goalReached = true;
-                return distance;
-            }
         }
         return distance;
     }
@@ -85,11 +79,16 @@ public class PathBlockerState extends State {
 
     private PathBlockerState movePlayer(int newX, int newY) {
         //NEEDS TO BE IMPLEMENTED PROPERLY
-       // boolean[][] newMatrix = cloneMatrix();
+        // boolean[][] newMatrix = cloneMatrix();
         // Mark current position as visited (true)
-       // newMatrix[playerY][playerX] = true;
+        // newMatrix[playerY][playerX] = true;
         // Set new position
-       // return new PathBlockerState(newMatrix, newX, newY, goalX, goalY, );
+        // return new PathBlockerState(newMatrix, newX, newY, goalX, goalY, );
+        //If the current location of the player matches the goal's location, stop moving and set goalReached to true
+//        if(x == goalX && y == goalY){
+//            goalReached = true;
+//            return distance;
+//        }
         return null;
     }
 
