@@ -44,8 +44,8 @@ public class PathBlockerState extends State {
                 List<Integer> inner = new ArrayList<>();
 
                 for (int i = 0;i<line.length();i++){
-                    Integer temp = Character.getNumericValue(line.charAt(i));
-                    inner.add(temp);
+                    int  temp = Character.getNumericValue(line.charAt(i));
+                    inner.add(Integer.valueOf((temp)));
                 }
 
                 outer.add(inner);
