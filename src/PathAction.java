@@ -19,6 +19,6 @@ public class PathAction extends Action {
 
     @Override
     public String toString() {
-        return "Move " + distance + " tiles to " + direction;
+        return "Moved " + distance + " spaces in direction: " + direction;
     }
 }
