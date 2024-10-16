@@ -121,19 +121,19 @@ public class PathBlockerState extends State {
         while (true) {
             switch (direction) {
                 case UP:
-                    if (y - 1 >= 0 && matrix[y - 1][x] == 0) y--;
+                    if (y - 1 >= 0 && matrix[y - 1][x] !=1 ) y--;
                     else return distance;
                     break;
                 case DOWN:
-                    if (y + 1 < matrix.length && matrix[y + 1][x] == 0) y++;
+                    if (y + 1 < matrix.length && matrix[y + 1][x]!=1 ) y++;
                     else return distance;
                     break;
                 case LEFT:
-                    if (x - 1 >= 0 && matrix[y][x - 1] == 0) x--;
+                    if (x - 1 >= 0 && matrix[y][x - 1] !=1 ) x--;
                     else return distance;
                     break;
                 case RIGHT:
-                    if (x + 1 < matrix[0].length && matrix[y][x + 1] == 0) x++;
+                    if (x + 1 < matrix[0].length && matrix[y][x + 1]!=1 ) x++;
                     else return distance;
                     break;
             }
