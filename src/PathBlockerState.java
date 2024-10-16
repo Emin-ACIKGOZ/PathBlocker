@@ -164,7 +164,7 @@ public class PathBlockerState extends State {
 
             case Direction.RIGHT:
 
-                while (newPlayerX < matrix[0].length-1 && matrix[newPlayerY][newPlayerX+1] != 1){ // stop if you are at the bound or your next cell is a wall
+                while (newPlayerX < newMatrix[0].length-1 && newMatrix[newPlayerY][newPlayerX+1] != 1){ // stop if you are at the bound or your next cell is a wall
 
                     if (newPlayerX == goalX && newPlayerY == goalY){ // you reached the goal
 
@@ -174,8 +174,8 @@ public class PathBlockerState extends State {
 
                     }
 
-                    matrix[newPlayerY][newPlayerX+1] = 2;
-                    matrix[newPlayerY][newPlayerX] = 1;
+                    newMatrix[newPlayerY][newPlayerX+1] = 2;
+                    newMatrix[newPlayerY][newPlayerX] = 1;
 
                     newPlayerX++;
 
@@ -184,7 +184,7 @@ public class PathBlockerState extends State {
 
             case Direction.DOWN:
 
-                while (newPlayerY < matrix.length-1 && matrix[newPlayerY+1][newPlayerX] != 1){ // stop if you are at the bound or your next cell is a wall
+                while (newPlayerY < newMatrix.length-1 && newMatrix[newPlayerY+1][newPlayerX] != 1){ // stop if you are at the bound or your next cell is a wall
 
                     if (newPlayerX == goalX && newPlayerY == goalY){ // you reached the goal
 
@@ -194,8 +194,8 @@ public class PathBlockerState extends State {
 
                     }
 
-                    matrix[newPlayerY+1][newPlayerX] = 2;
-                    matrix[newPlayerY][newPlayerX] = 1;
+                    newMatrix[newPlayerY+1][newPlayerX] = 2;
+                    newMatrix[newPlayerY][newPlayerX] = 1;
 
                     newPlayerY++;
 
@@ -204,7 +204,7 @@ public class PathBlockerState extends State {
 
             case Direction.LEFT:
 
-                while (newPlayerX > 0 && matrix[newPlayerY][newPlayerX-1] != 1){ // stop if you are at the bound or your next cell is a wall
+                while (newPlayerX > 0 && newMatrix[newPlayerY][newPlayerX-1] != 1){ // stop if you are at the bound or your next cell is a wall
 
                     if (newPlayerX == goalX && newPlayerY == goalY){ // you reached the goal
 
@@ -214,8 +214,8 @@ public class PathBlockerState extends State {
 
                     }
 
-                    matrix[newPlayerY][newPlayerX-1] = 2;
-                    matrix[newPlayerY][newPlayerX] = 1;
+                    newMatrix[newPlayerY][newPlayerX-1] = 2;
+                    newMatrix[newPlayerY][newPlayerX] = 1;
 
                     newPlayerX--;
 
@@ -224,7 +224,7 @@ public class PathBlockerState extends State {
 
             case Direction.UP:
 
-                while (newPlayerY > 0 && matrix[newPlayerY-1][newPlayerX] != 1){ // stop if you are at the bound or your next cell is a wall
+                while (newPlayerY > 0 && newMatrix[newPlayerY-1][newPlayerX] != 1){ // stop if you are at the bound or your next cell is a wall
 
                     if (newPlayerX == goalX && newPlayerY == goalY){ // you reached the goal
 
@@ -234,8 +234,8 @@ public class PathBlockerState extends State {
 
                     }
 
-                    matrix[newPlayerY-1][newPlayerX] = 2;
-                    matrix[newPlayerY][newPlayerX] = 1;
+                    newMatrix[newPlayerY-1][newPlayerX] = 2;
+                    newMatrix[newPlayerY][newPlayerX] = 1;
 
                     newPlayerY--;
 
