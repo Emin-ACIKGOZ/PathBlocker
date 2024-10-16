@@ -29,7 +29,7 @@ public class PathBlockerState extends State {
         this.goalReached = goalReached;
     }
 
-    public PathBlockerState(String filePath){ // create initial state based on .txt files
+    public PathBlockerState(String filePath) { // create initial state based on .txt files
 
         File file = new File(filePath);
 
@@ -38,12 +38,12 @@ public class PathBlockerState extends State {
 
             List<List<Integer>> outer = new ArrayList(); // i used 2d list because of the unknown dimensions of the .txt file
 
-            while (sc.hasNextLine()){
+            while (sc.hasNextLine()) {
                 String line = sc.nextLine();
 
                 List<Integer> inner = new ArrayList();
 
-                for (int i = 0;i<line.length();i++){
+                for (int i = 0; i < line.length(); i++) {
                     Integer temp = Character.getNumericValue(line.charAt(i));
                     inner.add(temp);
                 }
@@ -56,22 +56,21 @@ public class PathBlockerState extends State {
 
             this.matrix = new int[listRowSize][listColumnsSize];
 
-            for (int i = 0;i< this.matrix.length;i++){ // converting the list to static array
+            for (int i = 0; i < this.matrix.length; i++) { // converting the list to static array
 
                 List<Integer> row = outer.get(i);
 
-                for (int j = 0;j< this.matrix[i].length;j++){
+                for (int j = 0; j < this.matrix[i].length; j++) {
                     this.matrix[i][j] = row.get(j);
                 }
             }
 
-            for (int i = 0;i< this.matrix.length;i++){
-                for (int j = 0;j< this.matrix[i].length;j++){
-                    if (this.matrix[i][j] == 2){
+            for (int i = 0; i < this.matrix.length; i++) {
+                for (int j = 0; j < this.matrix[i].length; j++) {
+                    if (this.matrix[i][j] == 2) {
                         this.playerY = i;
                         this.playerX = j;
-                    }
-                    else if (this.matrix[i][j] == 3){
+                    } else if (this.matrix[i][j] == 3) {
                         this.goalY = i;
                         this.goalX = j;
                     }
@@ -94,156 +93,95 @@ public class PathBlockerState extends State {
 
     @Override
     public List<Action> getActionList() {
-        // List of valid actions (move in four directions)
         List<Action> actions = new ArrayList<>();
 
-        int moveUp = getMovementDistance(0, -1);
-        if (moveUp > 0) actions.add(new PathAction(0, -moveUp));
+        int upDist = getDistance(PathAction.Direction.UP);
+        if (upDist > 0) actions.add(new PathAction(PathAction.Direction.UP, upDist));
 
-        int moveDown = getMovementDistance(0, 1);
-        if (moveDown > 0) actions.add(new PathAction(0, moveDown));
+        int downDist = getDistance(PathAction.Direction.DOWN);
+        if (downDist > 0) actions.add(new PathAction(PathAction.Direction.DOWN, downDist));
 
-        int moveLeft = getMovementDistance(-1, 0);
-        if (moveLeft > 0) actions.add(new PathAction(-moveLeft, 0));
+        int leftDist = getDistance(PathAction.Direction.LEFT);
+        if (leftDist > 0) actions.add(new PathAction(PathAction.Direction.LEFT, leftDist));
 
-        int moveRight = getMovementDistance(1, 0);
-        if (moveRight > 0) actions.add(new PathAction(moveRight, 0));
+        int rightDist = getDistance(PathAction.Direction.RIGHT);
+        if (rightDist > 0) actions.add(new PathAction(PathAction.Direction.RIGHT, rightDist));
 
         return actions;
     }
 
-    private int getMovementDistance(int dx, int dy) {
-        //Amount of distance travelled in one direction
-        int distance = 0;
+
+    private int getDistance(PathAction.Direction direction) {
         int x = playerX;
         int y = playerY;
+        int distance = 0;
 
-        //Move until the goal or an obstacle is encountered
-        while (x + dx >= 0 && x + dx < matrix[0].length && y + dy >= 0 && y + dy < matrix.length
-                && matrix[y + dy][x + dx] == 0) {
-            x += dx;
-            y += dy;
+        while (true) {
+            switch (direction) {
+                case UP:
+                    if (y - 1 >= 0 && matrix[y - 1][x] == 0) y--;
+                    else return distance;
+                    break;
+                case DOWN:
+                    if (y + 1 < matrix.length && matrix[y + 1][x] == 0) y++;
+                    else return distance;
+                    break;
+                case LEFT:
+                    if (x - 1 >= 0 && matrix[y][x - 1] == 0) x--;
+                    else return distance;
+                    break;
+                case RIGHT:
+                    if (x + 1 < matrix[0].length && matrix[y][x + 1] == 0) x++;
+                    else return distance;
+                    break;
+            }
             distance++;
+            if (x == goalX && y == goalY) return distance;
         }
-        return distance;
-
-        // note from ugur: since i have changed the
-        // logic of boolean matrix to int, i assumed that the character
-        // should keep moving until the road is not empty (0). But this logic might be wrong i am not so sure.
-        // so we might need to adjust the last condition on the loop.
     }
 
     @Override
     public State doAction(Action action) {
-        if (action instanceof PathAction) {
-            PathAction pathAction = (PathAction) action;
-            return movePlayer(playerX + pathAction.getDeltaX(), playerY + pathAction.getDeltaY());
+        if (action instanceof PathAction pathAction) {
+            return movePlayer(pathAction);
         }
         return this;
     }
 
-    private PathBlockerState movePlayer(Direction direction) {
-        //NEEDS TO BE IMPLEMENTED PROPERLY
-        // boolean[][] newMatrix = cloneMatrix();
-        // Mark current position as visited (true)
-        // newMatrix[playerY][playerX] = true;
-        // Set new position
-        // return new PathBlockerState(newMatrix, newX, newY, goalX, goalY, );
-        //If the current location of the player matches the goal's location, stop moving and set goalReached to true
-//        if(x == goalX && y == goalY){
-//            goalReached = true;
-//            return distance;
-//        }
+    private PathBlockerState movePlayer(PathAction action) {
+        int newX = playerX;
+        int newY = playerY;
+        int[][] newMatrix = cloneMatrix();
 
-        int[][] newMatrix = this.cloneMatrix();
-        int newPlayerX = playerX;
-        int newPlayerY = playerY;
-        boolean newGoalReached = false;
+        for (int i = 0; i < action.getDistance(); i++) {
+            // Update position based on direction
+            switch (action.getDirection()) {
+                case UP:
+                    newY--;
+                    break;
+                case DOWN:
+                    newY++;
+                    break;
+                case LEFT:
+                    newX--;
+                    break;
+                case RIGHT:
+                    newX++;
+                    break;
+            }
 
-        switch(direction){
+            // Mark current tile as visited (wall)
+            newMatrix[playerY][playerX] = 1;
 
-            case Direction.RIGHT:
+            // Check if goal is reached
+            if (newX == goalX && newY == goalY) {
+                return new PathBlockerState(newMatrix, newX, newY, goalX, goalY, true);
+            }
 
-                while (newPlayerX < newMatrix[0].length-1 && newMatrix[newPlayerY][newPlayerX+1] != 1){ // stop if you are at the bound or your next cell is a wall
-
-                    if (newPlayerX == goalX && newPlayerY == goalY){ // you reached the goal
-
-                        newGoalReached = true;
-
-                        return new PathBlockerState(newMatrix, newPlayerX, newPlayerY, goalX, goalY, newGoalReached);
-
-                    }
-
-                    newMatrix[newPlayerY][newPlayerX+1] = 2;
-                    newMatrix[newPlayerY][newPlayerX] = 1;
-
-                    newPlayerX++;
-
-                }
-                break;
-
-            case Direction.DOWN:
-
-                while (newPlayerY < newMatrix.length-1 && newMatrix[newPlayerY+1][newPlayerX] != 1){ // stop if you are at the bound or your next cell is a wall
-
-                    if (newPlayerX == goalX && newPlayerY == goalY){ // you reached the goal
-
-                        newGoalReached = true;
-
-                        return new PathBlockerState(newMatrix, newPlayerX, newPlayerY, goalX, goalY, newGoalReached);
-
-                    }
-
-                    newMatrix[newPlayerY+1][newPlayerX] = 2;
-                    newMatrix[newPlayerY][newPlayerX] = 1;
-
-                    newPlayerY++;
-
-                }
-                break;
-
-            case Direction.LEFT:
-
-                while (newPlayerX > 0 && newMatrix[newPlayerY][newPlayerX-1] != 1){ // stop if you are at the bound or your next cell is a wall
-
-                    if (newPlayerX == goalX && newPlayerY == goalY){ // you reached the goal
-
-                        newGoalReached = true;
-
-                        return new PathBlockerState(newMatrix, newPlayerX, newPlayerY, goalX, goalY, newGoalReached);
-
-                    }
-
-                    newMatrix[newPlayerY][newPlayerX-1] = 2;
-                    newMatrix[newPlayerY][newPlayerX] = 1;
-
-                    newPlayerX--;
-
-                }
-                break;
-
-            case Direction.UP:
-
-                while (newPlayerY > 0 && newMatrix[newPlayerY-1][newPlayerX] != 1){ // stop if you are at the bound or your next cell is a wall
-
-                    if (newPlayerX == goalX && newPlayerY == goalY){ // you reached the goal
-
-                        newGoalReached = true;
-
-                        return new PathBlockerState(newMatrix, newPlayerX, newPlayerY, goalX, goalY, newGoalReached);
-
-                    }
-
-                    newMatrix[newPlayerY-1][newPlayerX] = 2;
-                    newMatrix[newPlayerY][newPlayerX] = 1;
-
-                    newPlayerY--;
-
-                }
-                break;
+            playerX = newX;
+            playerY = newY;
         }
-
-        return new PathBlockerState(newMatrix, newPlayerX, newPlayerY, goalX, goalY, newGoalReached);
+        return new PathBlockerState(newMatrix, newX, newY, goalX, goalY, false);
     }
 
     private int[][] cloneMatrix() {
@@ -257,10 +195,32 @@ public class PathBlockerState extends State {
     @Override
     public State undoAction(Action action) {
         if (action instanceof PathAction) {
-            //needs to be implemented!
+            PathAction pathAction = (PathAction) action;
+            int newX = playerX;
+            int newY = playerY;
+            int[][] newMatrix = cloneMatrix();
+
+            for (int i = 0; i < pathAction.getDistance(); i++) {
+                // Unmark visited tile (make it empty again)
+                newMatrix[playerY][playerX] = 0;
+
+                // Move the player back
+                switch (pathAction.getDirection()) {
+                    case UP: newY++; break;
+                    case DOWN: newY--; break;
+                    case LEFT: newX++; break;
+                    case RIGHT: newX--; break;
+                }
+
+                playerX = newX;
+                playerY = newY;
+            }
+
+            return new PathBlockerState(newMatrix, newX, newY, goalX, goalY, false);
         }
         return this;
     }
+
 
     @Override
     public PathBlockerState clone() throws CloneNotSupportedException {
@@ -268,9 +228,9 @@ public class PathBlockerState extends State {
         return new PathBlockerState(cloneMatrix(), playerX, playerY, goalX, goalY, goalReached);
     }
 
-    public void printMatrix(){
-        for (int i = 0;i< this.matrix.length;i++){
-            for (int j = 0;j< this.matrix[i].length;j++){
+    public void printMatrix() {
+        for (int i = 0; i < this.matrix.length; i++) {
+            for (int j = 0; j < this.matrix[i].length; j++) {
                 System.out.print(this.matrix[i][j] + " ");
             }
             System.out.println();
