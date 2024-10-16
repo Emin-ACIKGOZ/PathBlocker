@@ -156,6 +156,9 @@ public class PathBlockerState extends State {
         int[][] newMatrix = cloneMatrix();
 
         for (int i = 0; i < action.getDistance(); i++) {
+            // Mark current tile as visited (wall)
+            newMatrix[newY][newX] = 1;
+
             // Update position based on direction
             switch (action.getDirection()) {
                 case UP:
@@ -172,22 +175,13 @@ public class PathBlockerState extends State {
                     break;
             }
 
-            // Mark current tile as visited (wall)
-            newMatrix[playerY][playerX] = 1;
-
-            //Update player location
-            playerX = newX;
-            playerY = newY;
-
             // Check if goal is reached
             if (newX == goalX && newY == goalY) {
-                //changed newMatrix[newY][newX] = 2 to newMatrix[goalY][goalX] = 2
-                newMatrix[newY][newX] = 2;
-                //newMatrix[goalY][goalX] = 2; //Update player location
+                newMatrix[newY][newX] = 2; //Update player location
                 return new PathBlockerState(newMatrix, newX, newY, goalX, goalY, true);
             }
         }
-        newMatrix[playerY][playerX] = 2; //Update player location
+        newMatrix[newY][newX] = 2; //Update player location
         return new PathBlockerState(newMatrix, newX, newY, goalX, goalY, false);
     }
 
@@ -208,7 +202,7 @@ public class PathBlockerState extends State {
 
             for (int i = 0; i < pathAction.getDistance(); i++) {
                 // Unmark visited tile (make it empty again)
-                newMatrix[playerY][playerX] = 0;
+                newMatrix[newX][newY] = 0;
 
                 // Move the player back
                 switch (pathAction.getDirection()) {
@@ -226,11 +220,9 @@ public class PathBlockerState extends State {
                         break;
                 }
 
-                playerX = newX;
-                playerY = newY;
             }
 
-            newMatrix[playerY][playerX] = 2; //update player location
+            newMatrix[newY][newX] = 2; //update player location
             return new PathBlockerState(newMatrix, newX, newY, goalX, goalY, false);
         }
         return this;
