@@ -175,12 +175,14 @@ public class PathBlockerState extends State {
 
             // Check if goal is reached
             if (newX == goalX && newY == goalY) {
+                newMatrix[playerY][playerX] = 2; //Update player location
                 return new PathBlockerState(newMatrix, newX, newY, goalX, goalY, true);
             }
 
             playerX = newX;
             playerY = newY;
         }
+        newMatrix[playerY][playerX] = 2; //Update player location
         return new PathBlockerState(newMatrix, newX, newY, goalX, goalY, false);
     }
 
@@ -194,8 +196,7 @@ public class PathBlockerState extends State {
 
     @Override
     public State undoAction(Action action) {
-        if (action instanceof PathAction) {
-            PathAction pathAction = (PathAction) action;
+        if (action instanceof PathAction pathAction) {
             int newX = playerX;
             int newY = playerY;
             int[][] newMatrix = cloneMatrix();
@@ -206,14 +207,23 @@ public class PathBlockerState extends State {
 
                 // Move the player back
                 switch (pathAction.getDirection()) {
-                    case UP: newY++; break;
-                    case DOWN: newY--; break;
-                    case LEFT: newX++; break;
-                    case RIGHT: newX--; break;
+                    case UP:
+                        newY++;
+                        break;
+                    case DOWN:
+                        newY--;
+                        break;
+                    case LEFT:
+                        newX++;
+                        break;
+                    case RIGHT:
+                        newX--;
+                        break;
                 }
 
                 playerX = newX;
                 playerY = newY;
+                newMatrix[playerY][playerX] = 2; //update player location
             }
 
             return new PathBlockerState(newMatrix, newX, newY, goalX, goalY, false);
