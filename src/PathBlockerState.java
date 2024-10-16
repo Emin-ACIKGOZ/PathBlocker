@@ -223,9 +223,9 @@ public class PathBlockerState extends State {
 
                 playerX = newX;
                 playerY = newY;
-                newMatrix[playerY][playerX] = 2; //update player location
             }
 
+            newMatrix[playerY][playerX] = 2; //update player location
             return new PathBlockerState(newMatrix, newX, newY, goalX, goalY, false);
         }
         return this;
