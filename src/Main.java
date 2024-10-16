@@ -8,10 +8,50 @@ public class Main {
         // Error: when empty new lines at the top or bottom, enemy space characters at the start of the line
         // Error: Does not detect the goal
 
-        testFromOneEndOfPossibleActions("lvl01.txt",'l');
+        //testFromOneEndOfPossibleActions("lvl01.txt",'l');
 
         // tries each possible action and prints each possible state
         //testEachDirection("teyzen.txt");
+
+        PathBlockerState initialState = new PathBlockerState("lvl01.txt");
+        System.out.println("Initial State");
+        System.out.println("-------------");
+        initialState.printMatrix();
+
+        long startTime = System.nanoTime();
+        Solver solver = new BFSTreeSolver(31);
+        try {
+            List<State> solution = solver.solve(initialState);
+            long endTime = System.nanoTime();
+
+            if (solution == null || solution.size() == 0) {
+                System.out.println("No solution is found!");
+            }
+            else {
+                System.out.println("Solution step count : " + (solution.size() - 1));
+                for (int i = 0; i < solution.size(); i++) {
+                    PathBlockerState pathBlockerState = (PathBlockerState) (solution.get(i));
+                    pathBlockerState.printMatrix();
+
+                    if (i == 0)
+                        System.out.println("  --> Initial state\n");
+                    else
+                        System.out.println("  --> Step " + i + "\n");
+                }
+
+                System.out.println();
+                System.out.println("Maximum frontier size : " + solver.getMaximumFrontierSize());
+                System.out.println("Current frontier size : " + solver.getFrontierSize());
+                System.out.println("Current explored size : " + solver.getExploredSize());
+                System.out.println("Visited node count : " + solver.getVisitedCount());
+
+                System.out.println();
+                System.out.println("Maximum explored depth : " + solver.getMaximumExploredDepth());
+
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
