@@ -79,6 +79,8 @@ public class PathBlockerState extends State {
 
             this.goalReached = false;
 
+            //TESTING
+            System.out.println("Matrix size = " + matrix.length +"x"+matrix[0].length);
         } catch (FileNotFoundException e) {
             e.printStackTrace(); // we might change the exception handling logic later
         }
