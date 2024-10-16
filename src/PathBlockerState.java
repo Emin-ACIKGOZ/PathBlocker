@@ -158,6 +158,7 @@ public class PathBlockerState extends State {
         int[][] newMatrix = this.cloneMatrix();
         int newPlayerX = playerX;
         int newPlayerY = playerY;
+        boolean newGoalReached = false;
 
         switch(direction){
 
@@ -167,7 +168,7 @@ public class PathBlockerState extends State {
 
                     if (newPlayerX == goalX && newPlayerY == goalY){ // you reached the goal
 
-                        boolean newGoalReached = true;
+                        newGoalReached = true;
 
                         return new PathBlockerState(newMatrix, newPlayerX, newPlayerY, goalX, goalY, newGoalReached);
 
@@ -179,16 +180,70 @@ public class PathBlockerState extends State {
                     newPlayerX++;
 
                 }
+                break;
 
+            case Direction.DOWN:
 
+                while (newPlayerY < matrix.length-1 && matrix[newPlayerY+1][newPlayerX] != 1){ // stop if you are at the bound or your next cell is a wall
 
+                    if (newPlayerX == goalX && newPlayerY == goalY){ // you reached the goal
 
+                        newGoalReached = true;
 
+                        return new PathBlockerState(newMatrix, newPlayerX, newPlayerY, goalX, goalY, newGoalReached);
 
+                    }
+
+                    matrix[newPlayerY+1][newPlayerX] = 2;
+                    matrix[newPlayerY][newPlayerX] = 1;
+
+                    newPlayerY++;
+
+                }
+                break;
+
+            case Direction.LEFT:
+
+                while (newPlayerX > 0 && matrix[newPlayerY][newPlayerX-1] != 1){ // stop if you are at the bound or your next cell is a wall
+
+                    if (newPlayerX == goalX && newPlayerY == goalY){ // you reached the goal
+
+                        newGoalReached = true;
+
+                        return new PathBlockerState(newMatrix, newPlayerX, newPlayerY, goalX, goalY, newGoalReached);
+
+                    }
+
+                    matrix[newPlayerY][newPlayerX-1] = 2;
+                    matrix[newPlayerY][newPlayerX] = 1;
+
+                    newPlayerX--;
+
+                }
+                break;
+
+            case Direction.UP:
+
+                while (newPlayerY > 0 && matrix[newPlayerY-1][newPlayerX] != 1){ // stop if you are at the bound or your next cell is a wall
+
+                    if (newPlayerX == goalX && newPlayerY == goalY){ // you reached the goal
+
+                        newGoalReached = true;
+
+                        return new PathBlockerState(newMatrix, newPlayerX, newPlayerY, goalX, goalY, newGoalReached);
+
+                    }
+
+                    matrix[newPlayerY-1][newPlayerX] = 2;
+                    matrix[newPlayerY][newPlayerX] = 1;
+
+                    newPlayerY--;
+
+                }
+                break;
         }
 
-
-        return null;
+        return new PathBlockerState(newMatrix, newPlayerX, newPlayerY, goalX, goalY, newGoalReached);
     }
 
     private int[][] cloneMatrix() {
