@@ -36,12 +36,12 @@ public class PathBlockerState extends State {
         try {
             Scanner sc = new Scanner(file);
 
-            List<List<Integer>> outer = new ArrayList(); // i used 2d list because of the unknown dimensions of the .txt file
+            List<List<Integer>> outer = new ArrayList<>(); // I used a 2d list because of the unknown dimensions of the .txt file
 
             while (sc.hasNextLine()) {
                 String line = sc.nextLine();
 
-                List<Integer> inner = new ArrayList();
+                List<Integer> inner = new ArrayList<>();
 
                 for (int i = 0; i < line.length(); i++) {
                     Integer temp = Character.getNumericValue(line.charAt(i));
@@ -52,7 +52,7 @@ public class PathBlockerState extends State {
             }
 
             int listRowSize = outer.size();
-            int listColumnsSize = outer.get(0).size();
+            int listColumnsSize = outer.getFirst().size();
 
             this.matrix = new int[listRowSize][listColumnsSize];
 
@@ -224,14 +224,14 @@ public class PathBlockerState extends State {
 
     @Override
     public PathBlockerState clone() throws CloneNotSupportedException {
-        // Return a deep copy of the state
+        //Returns a deep copy of the state
         return new PathBlockerState(cloneMatrix(), playerX, playerY, goalX, goalY, goalReached);
     }
 
     public void printMatrix() {
-        for (int i = 0; i < this.matrix.length; i++) {
-            for (int j = 0; j < this.matrix[i].length; j++) {
-                System.out.print(this.matrix[i][j] + " ");
+        for (int[] row : this.matrix) {
+            for (int cell : row) {
+                System.out.print(cell + " ");
             }
             System.out.println();
         }
