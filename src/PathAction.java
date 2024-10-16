@@ -1,22 +1,24 @@
 public class PathAction extends Action {
-    private final int deltaX; // Movement along the x-axis
-    private final int deltaY; // Movement along the y-axis
+    public enum Direction { UP, DOWN, LEFT, RIGHT }
 
-    public PathAction(int deltaX, int deltaY) {
-        this.deltaX = deltaX;
-        this.deltaY = deltaY;
+    private final Direction direction;
+    private final int distance;
+
+    public PathAction(Direction direction, int distance) {
+        this.direction = direction;
+        this.distance = distance;
     }
 
-    public int getDeltaX() {
-        return deltaX;
+    public Direction getDirection() {
+        return direction;
     }
 
-    public int getDeltaY() {
-        return deltaY;
+    public int getDistance() {
+        return distance;
     }
 
     @Override
     public String toString() {
-        return "Move by (" + deltaX + ", " + deltaY + ")";
+        return "Moved " + distance + " spaces in direction: " + direction;
     }
 }
