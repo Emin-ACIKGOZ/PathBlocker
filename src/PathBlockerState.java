@@ -7,8 +7,8 @@ import java.util.Scanner;
 public class PathBlockerState extends State {
 
     private int[][] matrix; // 0 for empty space, 1 for walls, 2 for character position, 3 for goal
-    private int playerX, playerY; // Player's current position
-    private int goalX, goalY; // Goal position
+    public int playerX, playerY; // Player's current position
+    public int goalX, goalY; // Goal position
     private boolean goalReached;
 
     public PathBlockerState(int[][] matrix, int playerX, int playerY, int goalX, int goalY) {
@@ -177,7 +177,9 @@ public class PathBlockerState extends State {
 
             // Check if goal is reached
             if (newX == goalX && newY == goalY) {
-                newMatrix[playerY][playerX] = 2; //Update player location
+                //changed newMatrix[newY][newX] = 2 to newMatrix[goalY][goalX] = 2
+                //newMatrix[newY][newX] = 2;
+                newMatrix[goalY][goalX] = 2; //Update player location
                 return new PathBlockerState(newMatrix, newX, newY, goalX, goalY, true);
             }
 

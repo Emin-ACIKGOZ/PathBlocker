@@ -8,7 +8,7 @@ public class Main {
         // Error: when empty new lines at the top or bottom, enemy space characters at the start of the line
         // Error: Does not detect the goal
 
-        testFromOneEndOfPossibleActions("anan.txt",'s');
+        testFromOneEndOfPossibleActions("lvl01.txt",'l');
 
         // tries each possible action and prints each possible state
         //testEachDirection("teyzen.txt");
@@ -50,6 +50,8 @@ public class Main {
 
         if (currentPbs.isGoal()) {
             System.out.println("Goal reached!");
+            System.out.println("goal X: " + currentPbs.goalX + " goal Y: "+ currentPbs.goalY );
+            System.out.println("player X: " + currentPbs.playerX + " player Y: "+ currentPbs.playerY );
         } else {
             System.out.println("Goal not reached.");
         }
@@ -83,6 +85,11 @@ public class Main {
 
         while (!statesQueue.isEmpty()) {  // Continue until no states remain to process
             PathBlockerState currentPbs = statesQueue.poll();  // Get the next state from the queue
+            if(currentPbs.isGoal()){
+                currentPbs.printMatrix();
+                System.out.println("success!!!!!!");
+                break;
+            }
             System.out.println("Step " + step + ":");
 
             // Get the list of actions available from the current state
@@ -105,6 +112,12 @@ public class Main {
                     clonedPbs = (PathBlockerState) currentPbs.clone();
                 } catch (CloneNotSupportedException e) {
                     throw new RuntimeException(e);
+                }
+
+                if(clonedPbs.isGoal()){
+                    currentPbs.printMatrix();
+                    System.out.println("success!!!!!!");
+                    break;
                 }
 
                 // Apply the action to the cloned state
