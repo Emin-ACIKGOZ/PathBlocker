@@ -175,16 +175,17 @@ public class PathBlockerState extends State {
             // Mark current tile as visited (wall)
             newMatrix[playerY][playerX] = 1;
 
+            //Update player location
+            playerX = newX;
+            playerY = newY;
+
             // Check if goal is reached
             if (newX == goalX && newY == goalY) {
                 //changed newMatrix[newY][newX] = 2 to newMatrix[goalY][goalX] = 2
-                //newMatrix[newY][newX] = 2;
-                newMatrix[goalY][goalX] = 2; //Update player location
+                newMatrix[newY][newX] = 2;
+                //newMatrix[goalY][goalX] = 2; //Update player location
                 return new PathBlockerState(newMatrix, newX, newY, goalX, goalY, true);
             }
-
-            playerX = newX;
-            playerY = newY;
         }
         newMatrix[playerY][playerX] = 2; //Update player location
         return new PathBlockerState(newMatrix, newX, newY, goalX, goalY, false);
