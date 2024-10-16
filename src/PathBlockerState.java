@@ -176,6 +176,8 @@ public class PathBlockerState extends State {
                     matrix[newPlayerY][newPlayerX+1] = 2;
                     matrix[newPlayerY][newPlayerX] = 1;
 
+                    newPlayerX++;
+
                 }
 
 
