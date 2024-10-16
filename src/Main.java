@@ -5,50 +5,20 @@ import java.util.Queue;
 
 public class Main {
     public static void main(String[] args) {
-        // Error when empty new lines at the top or bottom, enemy space characters at the start of the line
-        //blankSpaceCharacterTest();
+        // Error: when empty new lines at the top or bottom, enemy space characters at the start of the line
+        // Error: Does not detect the goal
 
-        //borderlessTest();
-        //borderedTest();
+        testFromOneEndOfPossibleActions("anan.txt",'s');
 
         // tries each possible action and prints each possible state
-        testEachDirection("teyzen.txt");
-    }
-
-    public static void blankSpaceCharacterTest(){
-        PathBlockerState pbs = new PathBlockerState("lvl01BlankSpaces.txt");
-        pbs.printMatrix();
-        System.out.println();
-        System.out.println("1:");
-        List<Action> actions1 = pbs.getActionList();
-        PathBlockerState pbs2 = (PathBlockerState) pbs.doAction(actions1.get(0));
-        pbs2.printMatrix();
-        System.out.println();
+        //testEachDirection("teyzen.txt");
 
     }
 
-    public static void borderlessTest(){
-        //WITHOUT BORDER
-        PathBlockerState pbs = new PathBlockerState("lvl01Bless.txt");
-        pbs.printMatrix();
-        System.out.println();
-        System.out.println("1:");
-        List<Action> actions1 = pbs.getActionList();
-        PathBlockerState pbs2 = (PathBlockerState) pbs.doAction(actions1.get(0));
-        pbs2.printMatrix();
-        System.out.println();
 
-        System.out.println("2 valid move:");
-        List<Action> actions2 = pbs2.getActionList();
-        PathBlockerState pbs3 = (PathBlockerState) pbs2.doAction(actions2.get(0));
-        pbs3.printMatrix();
-        System.out.println();
-
-    }
-
-    public static void borderedTest(){
+    public static void testFromOneEndOfPossibleActions(String filePath, char fromWhere){
         //WITH BORDER
-        PathBlockerState pbs = new PathBlockerState("anan.txt");
+        PathBlockerState pbs = new PathBlockerState(filePath);
         pbs.printMatrix();
         System.out.println();
 
@@ -65,8 +35,13 @@ public class Main {
                 break;  // Exit if no further actions can be performed
             }
 
-            // Perform the first action in the list
-            currentPbs = (PathBlockerState) currentPbs.doAction(actions.getLast());
+            if(fromWhere == 's'){
+                currentPbs = (PathBlockerState) currentPbs.doAction(actions.getFirst());
+            }
+            else if(fromWhere == 'l'){
+                currentPbs = (PathBlockerState) currentPbs.doAction(actions.getLast());
+            }
+
             currentPbs.printMatrix();
             System.out.println();
 
