@@ -40,10 +40,14 @@ public class PathBlockerState extends State {
 
             while (sc.hasNextLine()) {
                 String line = sc.nextLine();
-
+                int lineLength = line.length();
                 List<Integer> inner = new ArrayList<>();
 
-                for (int i = 0; i < line.length(); i++) {
+                for (int i = 0; i < lineLength; i++) {
+
+                    if (line.charAt(i) != '0' && line.charAt(i) != '1' && line.charAt(i) != '2' && line.charAt(i) != '3')
+                        continue; // skips any character that shouldn't be present
+
                     Integer temp = Character.getNumericValue(line.charAt(i));
                     inner.add(temp);
                 }
