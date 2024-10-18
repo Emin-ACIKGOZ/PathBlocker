@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -243,4 +244,29 @@ public class PathBlockerState extends State {
             System.out.println();
         }
     }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (int[] row : this.matrix) {
+            for (int cell : row) {
+                sb.append(cell).append(" ");
+            }
+            sb.append("\n"); // Add a newline after each row
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + Arrays.deepHashCode(matrix);
+        result = 31 * result + playerX;
+        result = 31 * result + playerY;
+        result = 31 * result + goalX;
+        result = 31 * result + goalY;
+        result = 31 * result + Boolean.hashCode(goalReached);
+        return result;
+    }
+
+
 }
