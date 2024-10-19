@@ -20,9 +20,14 @@ public class Main {
 
         long startTime = System.nanoTime();
         Solver solver =
-                //new BFSTreeSolver(31)     // 0.003-0.005
-                new BFSGraphSolver(31); // 0.005
-                ;
+                //new BFSTreeSolver(31);     // 0.003-0.005
+                //new BFSGraphSolver(31); // 0.005
+                //new DFSTreeSolver(31);
+                //new DFSGraphSolver(31);
+                new DFSTreeMemEfficientSolver(31);
+                //new IterativeDeepeningSolver(31);
+                //new IterativeDeepeningRecursiveSolver(31);
+                //new IterativeDeepeningMemEfficientSolver(100);
 
         try {
             List<State> solution = solver.solve(initialState);
