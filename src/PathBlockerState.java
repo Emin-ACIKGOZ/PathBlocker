@@ -243,7 +243,7 @@ public class PathBlockerState extends State {
         //Returns a deep copy of the state
         return new PathBlockerState(cloneMatrix(), playerX, playerY, goalX, goalY, goalReached);
     }
-    
+
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (int[] row : this.matrix) {
