@@ -21,7 +21,7 @@ public class Main {
         System.out.println("-------------");
         initialState.printMatrix();
 
-        String textToBeSavesAsPng = "";
+        String textToBeSavedAsPng = "";
         StringBuilder pngName = new StringBuilder("level01/0001.png"); // i will later change the string according to levels
 
         long startTime = System.nanoTime();
@@ -35,16 +35,28 @@ public class Main {
                 String temp = "No solution is found!";
                 System.out.println("temp");
 
-                textToBeSavesAsPng += temp;
-
+                textToBeSavedAsPng += temp;
+                PngConverter.saveStringAsImage(textToBeSavedAsPng,pngName.toString(),1920,18);
             }
             else {
                 System.out.println("Solution step count : " + (solutionSize - 1));
+
+                textToBeSavedAsPng += initialState.getStringRepresentation();
+                PngConverter.saveStringAsImage(textToBeSavedAsPng,pngName.toString(),1920,18);
+
+                // note from ugur to aziz: we might need to
+                // add the initialState to solution sequence
+                // but i am not really sure so for now,
+                // i am converting initial state independently
+
                 for (int i = 0; i < solutionSize; i++) {
+
+                    textToBeSavedAsPng = "";
+
                     PathBlockerState pathBlockerState = (PathBlockerState) (solution.get(i));
                     pathBlockerState.printMatrix();
 
-                    textToBeSavesAsPng += pathBlockerState.getStringRepresentation();
+                    textToBeSavedAsPng += pathBlockerState.getStringRepresentation();
 
                     if (i == 0){
                         System.out.println("  --> Initial state\n");
@@ -52,18 +64,18 @@ public class Main {
                     else{
                         System.out.println("  --> Step " + i + "\n");
 
-                        if (i<10){
-                            pngName.replace(11,12,(i+""));
+                        int pngIndex = i+1;
+
+                        if (pngIndex<10){
+                            pngName.replace(11,12,(pngIndex+""));
                         }
 
                         else{
-                            pngName.replace(10,12,(i+""));
+                            pngName.replace(10,12,(pngIndex+""));
                         }
 
                     }
-
-                    PngConverter.saveStringAsImage(textToBeSavesAsPng,pngName.toString(),1920,18);
-                    textToBeSavesAsPng = "";
+                    PngConverter.saveStringAsImage(textToBeSavedAsPng,pngName.toString(),360,18);
                 }
 
                 System.out.println();
