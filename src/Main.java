@@ -7,7 +7,10 @@ import java.util.Queue;
 public class Main {
     public static void main(String[] args) {
 
-        solveAllLevels(1);
+        solveAllLevels(10);
+
+
+        // NOTE TO UGUR FROM AZIZ: otuzbir COMMENTED ALL PREVIOUS MAIN
 
 //        PathBlockerState initialState = new PathBlockerState("lvl01.txt");
 ////System.out.println("Initial State");
@@ -108,7 +111,7 @@ public class Main {
 
             // Solver array with all solvers
             Solver[] solvers = {
-                    new BFSTreeSolver(31),
+                    new BFSTreeSolver(100000),
                     //new BFSGraphSolver(31),
                     //new DFSTreeSolver(31),
                     //new DFSGraphSolver(31),
