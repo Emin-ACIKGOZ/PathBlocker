@@ -14,26 +14,24 @@ public class Main {
         //testEachDirection("teyzen.txt");*/
 
 
-
-
         PathBlockerState initialState = new PathBlockerState("lvl01.txt");
         System.out.println("Initial State");
         System.out.println("-------------");
-        initialState.printMatrix();
+        System.out.println(initialState);
 
         String textToBeSavedAsPng = "";
         StringBuilder pngName = new StringBuilder("level01/0001.png"); // i will later change the string according to levels
 
         long startTime = System.nanoTime();
         Solver solver =
-                //new BFSTreeSolver(31);     // 0.003-0.005
-                //new BFSGraphSolver(31); // 0.005
+                //new BFSTreeSolver(31);                                        // 0.003-0.005
+                //new BFSGraphSolver(31);                               // 0.005
                 //new DFSTreeSolver(31);
                 //new DFSGraphSolver(31);
-                new DFSTreeMemEfficientSolver(31);
+                //new DFSTreeMemEfficientSolver(31);
                 //new IterativeDeepeningSolver(31);
-                //new IterativeDeepeningRecursiveSolver(31);
-                //new IterativeDeepeningMemEfficientSolver(100);
+                new IterativeDeepeningRecursiveSolver(31);
+                //new IterativeDeepeningMemEfficientSolver(31);
 
         try {
             List<State> solution = solver.solve(initialState);
@@ -50,7 +48,7 @@ public class Main {
             else {
                 System.out.println("Solution step count : " + (solutionSize - 1));
 
-                textToBeSavedAsPng += initialState.getStringRepresentation();
+                textToBeSavedAsPng += initialState.toString();
                 PngConverter.saveStringAsImage(textToBeSavedAsPng,pngName.toString(),1920,18);
 
                 // note from ugur to aziz: we might need to
@@ -63,9 +61,9 @@ public class Main {
                     textToBeSavedAsPng = "";
 
                     PathBlockerState pathBlockerState = (PathBlockerState) (solution.get(i));
-                    pathBlockerState.printMatrix();
+                    System.out.println(pathBlockerState);
 
-                    textToBeSavedAsPng += pathBlockerState.getStringRepresentation();
+                    textToBeSavedAsPng += pathBlockerState.toString();
 
                     if (i == 0){
                         System.out.println("  --> Initial state\n");
@@ -101,14 +99,13 @@ public class Main {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
     }
 
 
     public static void testFromOneEndOfPossibleActions(String filePath, char fromWhere){
         //WITH BORDER
         PathBlockerState pbs = new PathBlockerState(filePath);
-        pbs.printMatrix();
+        System.out.println(pbs);
         System.out.println();
 
         int step = 1;
@@ -131,7 +128,7 @@ public class Main {
                 currentPbs = (PathBlockerState) currentPbs.doAction(actions.getLast());
             }
 
-            currentPbs.printMatrix();
+            System.out.println(currentPbs);
             System.out.println();
 
             step++;
@@ -145,26 +142,12 @@ public class Main {
             System.out.println("Goal not reached.");
         }
 
-//        PathBlockerState pbs = new PathBlockerState("lvl01.txt");
-//        pbs.printMatrix();
-//        System.out.println();
-//        System.out.println("1:");
-//        List<Action> actions1 = pbs.getActionList();
-//        PathBlockerState pbs2 = (PathBlockerState) pbs.doAction(actions1.get(0));
-//        pbs2.printMatrix();
-//        System.out.println();
-//
-//        System.out.println("2:");
-//        List<Action> actions2 = pbs2.getActionList();
-//        PathBlockerState pbs3 = (PathBlockerState) pbs2.doAction(actions2.get(0));
-//        pbs3.printMatrix();
-//        System.out.println();
     }
 
     // tries each possible action and prints each possible state one by one
     public static void testEachDirection(String txtPath){
         PathBlockerState initialPbs = new PathBlockerState(txtPath);
-        initialPbs.printMatrix();
+        System.out.println(initialPbs);
         System.out.println();
 
         Queue<PathBlockerState> statesQueue = new LinkedList<>();
@@ -175,7 +158,7 @@ public class Main {
         while (!statesQueue.isEmpty()) {  // Continue until no states remain to process
             PathBlockerState currentPbs = statesQueue.poll();  // Get the next state from the queue
             if(currentPbs.isGoal()){
-                currentPbs.printMatrix();
+                System.out.println(currentPbs);
                 System.out.println("success!!!!!!");
                 break;
             }
@@ -204,7 +187,7 @@ public class Main {
                 }
 
                 if(clonedPbs.isGoal()){
-                    currentPbs.printMatrix();
+                    System.out.println(currentPbs);
                     System.out.println("success!!!!!!");
                     break;
                 }
@@ -215,7 +198,7 @@ public class Main {
                 // If the action results in a valid new state
                 if (newPbs != null) {
                     System.out.println("Action resulted in a new state:");
-                    newPbs.printMatrix();  // Print the new state after applying the action
+                    System.out.println(newPbs);  // Print the new state after applying the action
                     System.out.println();
 
                     // Add the new state to the queue to continue exploring its actions
