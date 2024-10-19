@@ -19,7 +19,11 @@ public class Main {
         initialState.printMatrix();
 
         long startTime = System.nanoTime();
-        Solver solver = new BFSTreeSolver(31);
+        Solver solver =
+                //new BFSTreeSolver(31)     // 0.003-0.005
+                new BFSGraphSolver(31); // 0.005
+                ;
+
         try {
             List<State> solution = solver.solve(initialState);
             long endTime = System.nanoTime();
@@ -47,6 +51,7 @@ public class Main {
 
                 System.out.println();
                 System.out.println("Maximum explored depth : " + solver.getMaximumExploredDepth());
+                System.out.println("Time as seconds: " + (endTime - startTime) / 1000000000.0 );
 
             }
         } catch (Exception e) {
