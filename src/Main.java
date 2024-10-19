@@ -5,18 +5,24 @@ import java.util.Queue;
 
 public class Main {
     public static void main(String[] args) {
-        // Error: when empty new lines at the top or bottom, enemy space characters at the start of the line
+       /* // Error: when empty new lines at the top or bottom, enemy space characters at the start of the line
         // Error: Does not detect the goal
 
         //testFromOneEndOfPossibleActions("lvl01.txt",'l');
 
         // tries each possible action and prints each possible state
-        //testEachDirection("teyzen.txt");
+        //testEachDirection("teyzen.txt");*/
+
+
+
 
         PathBlockerState initialState = new PathBlockerState("lvl01.txt");
         System.out.println("Initial State");
         System.out.println("-------------");
         initialState.printMatrix();
+
+        String textToBeSavesAsPng = "";
+        StringBuilder pngName = new StringBuilder("level01/0001.png"); // i will later change the string according to levels
 
         long startTime = System.nanoTime();
         Solver solver = new BFSTreeSolver(31);
@@ -25,7 +31,12 @@ public class Main {
             long endTime = System.nanoTime();
             int solutionSize = solution.size();
             if (solution == null || solutionSize == 0) {
-                System.out.println("No solution is found!");
+
+                String temp = "No solution is found!";
+                System.out.println("temp");
+
+                textToBeSavesAsPng += temp;
+
             }
             else {
                 System.out.println("Solution step count : " + (solutionSize - 1));
@@ -33,10 +44,26 @@ public class Main {
                     PathBlockerState pathBlockerState = (PathBlockerState) (solution.get(i));
                     pathBlockerState.printMatrix();
 
-                    if (i == 0)
+                    textToBeSavesAsPng += pathBlockerState.getStringRepresentation();
+
+                    if (i == 0){
                         System.out.println("  --> Initial state\n");
-                    else
+                    }
+                    else{
                         System.out.println("  --> Step " + i + "\n");
+
+                        if (i<10){
+                            pngName.replace(11,12,(i+""));
+                        }
+
+                        else{
+                            pngName.replace(10,12,(i+""));
+                        }
+
+                    }
+
+                    PngConverter.saveStringAsImage(textToBeSavesAsPng,pngName.toString(),1920,18);
+                    textToBeSavesAsPng = "";
                 }
 
                 System.out.println();
