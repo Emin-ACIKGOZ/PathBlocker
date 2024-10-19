@@ -1,4 +1,5 @@
 import java.io.*;
+import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.LinkedList;
@@ -105,6 +106,20 @@ public class Main {
             String levelFileName = String.format("lvl%02d.txt", level); // lvl01.txt, lvl02.txt, ...
             PathBlockerState initialState = new PathBlockerState(levelFileName);
             System.out.println("Solving level: " + levelFileName);
+
+            String directoryPath = String.format("level%02d", level);
+
+            Path path = Paths.get(directoryPath);
+
+            if (!Files.exists(path)){ // if directory doesn't exist
+                System.out.println(directoryPath + "\\ directory doesn't exist. It will be created manually.");
+                try {
+                    Files.createDirectories(path); // create the directory manually
+                    System.out.println("Directory created successfully.");
+                } catch (Exception e) {
+                    System.out.println("Failed to create directory: " + e.getMessage());
+                }
+            }
 
             StringBuilder pngName = new StringBuilder(String.format("level%02d/0001.png", level));
             String textToBeSavedAsPng = "";
