@@ -111,14 +111,14 @@ public class Main {
 
             // Solver array with all solvers
             Solver[] solvers = {
-                    new BFSTreeSolver(100000),
+                    //new BFSTreeSolver(100000),
                     //new BFSGraphSolver(31),
                     //new DFSTreeSolver(31),
                     //new DFSGraphSolver(31),
                     //new DFSTreeMemEfficientSolver(31),
                     //new IterativeDeepeningSolver(31),
                     //new IterativeDeepeningRecursiveSolver(31),
-                    //new IterativeDeepeningMemEfficientSolver(31)
+                    new IterativeDeepeningMemEfficientSolver(31)
             };
 
             for (Solver solver : solvers) {

@@ -156,40 +156,38 @@ public class PathBlockerState extends State {
     }
 
     private PathBlockerState movePlayer(PathAction action) {
-        int newX = playerX;
-        int newY = playerY;
-        int[][] newMatrix = cloneMatrix();
 
         for (int i = 0; i < action.getDistance(); i++) { // Note to emin: You might need to change this for optimization.
                                                          // Normally i would change this immediately but
                                                          // I might break the code so you should check this out.
             // Mark current tile as visited (wall)
-            newMatrix[newY][newX] = 1;
+            matrix[playerY][playerX] = 1;
 
             // Update position based on direction
             switch (action.getDirection()) {
                 case UP:
-                    newY--;
+                    playerY--;
                     break;
                 case DOWN:
-                    newY++;
+                    playerY++;
                     break;
                 case LEFT:
-                    newX--;
+                    playerX--;
                     break;
                 case RIGHT:
-                    newX++;
+                    playerX++;
                     break;
             }
 
             // Check if goal is reached
-            if (newX == goalX && newY == goalY) {
-                newMatrix[newY][newX] = 2; //Update player location
-                return new PathBlockerState(newMatrix, newX, newY, goalX, goalY, true);
+            if (playerX == goalX && playerY == goalY) {
+                matrix[playerY][playerX] = 2; //Update player location
+                this.goalReached = true;
+                return this;
             }
         }
-        newMatrix[newY][newX] = 2; //Update player location
-        return new PathBlockerState(newMatrix, newX, newY, goalX, goalY, false);
+        matrix[playerY][playerX] = 2; //Update player location
+        return this; //check if properly false?
     }
 
     private int[][] cloneMatrix() {
@@ -203,36 +201,34 @@ public class PathBlockerState extends State {
     @Override
     public State undoAction(Action action) {
         if (action instanceof PathAction pathAction) {
-            int newX = playerX;
-            int newY = playerY;
-            int[][] newMatrix = cloneMatrix();
 
             for (int i = 0; i < pathAction.getDistance(); i++) {  // Note to emin: You might need to change this for optimization.
                                                                   // Normally i would change this immediately but
                                                                   // I might break the code so you should check this out.
                 // Unmark visited tile (make it empty again)
-                newMatrix[newX][newY] = 0;
+                matrix[playerY][playerX] = 0;
 
                 // Move the player back
                 switch (pathAction.getDirection()) {
                     case UP:
-                        newY++;
+                        playerY++;
                         break;
                     case DOWN:
-                        newY--;
+                        playerY--;
                         break;
                     case LEFT:
-                        newX++;
+                        playerX++;
                         break;
                     case RIGHT:
-                        newX--;
+                        playerX--;
                         break;
                 }
 
             }
 
-            newMatrix[newY][newX] = 2; //update player location
-            return new PathBlockerState(newMatrix, newX, newY, goalX, goalY, false);
+            matrix[playerY][playerX] = 2; //update player location
+            //this.goalReached = false;
+            return this;
         }
         return this;
     }
