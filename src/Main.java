@@ -23,13 +23,13 @@ public class Main {
         try {
             List<State> solution = solver.solve(initialState);
             long endTime = System.nanoTime();
-
-            if (solution == null || solution.size() == 0) {
+            int solutionSize = solution.size();
+            if (solution == null || solutionSize == 0) {
                 System.out.println("No solution is found!");
             }
             else {
-                System.out.println("Solution step count : " + (solution.size() - 1));
-                for (int i = 0; i < solution.size(); i++) {
+                System.out.println("Solution step count : " + (solutionSize - 1));
+                for (int i = 0; i < solutionSize; i++) {
                     PathBlockerState pathBlockerState = (PathBlockerState) (solution.get(i));
                     pathBlockerState.printMatrix();
 

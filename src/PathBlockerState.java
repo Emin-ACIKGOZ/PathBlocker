@@ -159,7 +159,9 @@ public class PathBlockerState extends State {
         int newY = playerY;
         int[][] newMatrix = cloneMatrix();
 
-        for (int i = 0; i < action.getDistance(); i++) {
+        for (int i = 0; i < action.getDistance(); i++) { // Note to emin: You might need to change this for optimization.
+                                                         // Normally i would change this immediately but
+                                                         // I might break the code so you should check this out.
             // Mark current tile as visited (wall)
             newMatrix[newY][newX] = 1;
 
@@ -204,7 +206,9 @@ public class PathBlockerState extends State {
             int newY = playerY;
             int[][] newMatrix = cloneMatrix();
 
-            for (int i = 0; i < pathAction.getDistance(); i++) {
+            for (int i = 0; i < pathAction.getDistance(); i++) {  // Note to emin: You might need to change this for optimization.
+                                                                  // Normally i would change this immediately but
+                                                                  // I might break the code so you should check this out.
                 // Unmark visited tile (make it empty again)
                 newMatrix[newX][newY] = 0;
 
