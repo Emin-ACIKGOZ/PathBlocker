@@ -101,6 +101,9 @@ public class Main {
 
 
     public static void solveAllLevels(int totalLevels) {
+        double totalTime = 0;  // To accumulate total time across levels
+        int solvedLevels = 0;  // To track how many levels were solved
+
         for (int level = 1; level <= totalLevels; level++) {
             String levelFileName = String.format("lvl%02d.txt", level); // lvl01.txt, lvl02.txt, ...
             PathBlockerState initialState = new PathBlockerState(levelFileName);
@@ -118,7 +121,7 @@ public class Main {
                     new DFSTreeMemEfficientSolver(31),
                     //new IterativeDeepeningSolver(31),
                     //new IterativeDeepeningRecursiveSolver(31),
-                    // new IterativeDeepeningMemEfficientSolver(31)
+                    //new IterativeDeepeningMemEfficientSolver(31)
             };
 
             for (Solver solver : solvers) {
@@ -130,6 +133,8 @@ public class Main {
                 try {
                     List<State> solution = solver.solve(initialState);
                     long endTime = System.nanoTime();
+                    double timeInMillis = (endTime - startTime) / 1_000_000.0;
+
                     int solutionSize = (solution != null) ? solution.size() : 0;
 
                     if (solution == null || solutionSize == 0) {
@@ -164,8 +169,12 @@ public class Main {
                         System.out.println("Current explored size: " + solver.getExploredSize());
                         System.out.println("Visited node count: " + solver.getVisitedCount());
                         System.out.println("Maximum explored depth: " + solver.getMaximumExploredDepth());
-                        System.out.println("Time in milliseconds: " + (endTime - startTime) / 1_000_000.0);
+                        System.out.println("Time in milliseconds: " + timeInMillis);
                         System.out.println();
+
+                        // Accumulate total time and count solved levels
+                        totalTime += timeInMillis;
+                        solvedLevels++;
                     }
                 } catch (Exception e) {
                     System.out.println("Error during solving with solver " + solver.getClass().getSimpleName());
@@ -175,7 +184,15 @@ public class Main {
             }
             System.out.println("=============================================================================");
         }
+
+        // Print total and average time at the end
+        System.out.println("Total time for all levels: " + totalTime + " milliseconds");
+        if (solvedLevels > 0) {
+            double averageTime = totalTime / solvedLevels;
+            System.out.println("Average time per solved level: " + averageTime + " milliseconds");
+        }
     }
+
 
 
 
