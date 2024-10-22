@@ -68,7 +68,7 @@ public class PngConverter {
                         sb = new StringBuilder();
                     }
                 }
-                if (sb.length() > 0) {
+                if (!sb.isEmpty()) {
                     g.drawString(sb.toString(), x, y);
                     y += lineHeight;
                 }
