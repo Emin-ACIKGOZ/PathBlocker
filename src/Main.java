@@ -164,7 +164,7 @@ public class Main {
                         System.out.println("Current explored size: " + solver.getExploredSize());
                         System.out.println("Visited node count: " + solver.getVisitedCount());
                         System.out.println("Maximum explored depth: " + solver.getMaximumExploredDepth());
-                        System.out.println("Time as seconds: " + (endTime - startTime) / 1_000_000_000.0);
+                        System.out.println("Time in milliseconds: " + (endTime - startTime) / 1_000_000.0);
                         System.out.println();
                     }
                 } catch (Exception e) {
