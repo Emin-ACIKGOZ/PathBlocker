@@ -23,7 +23,7 @@ public class DFSTreeMemEfficientSolver extends Solver {
         visitedCount = 1;
 
         // exploring with LIFO strategy
-        while (frontier.size() > 0) {
+        while (!frontier.isEmpty()) {
             // choose a leaf node and remove it from the frontier
             Node node = frontier.pop();
             maximumExploredDepth = Math.max(maximumExploredDepth,  node.depth);

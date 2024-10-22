@@ -70,8 +70,8 @@ public class Node implements Comparable<Node> {
         StringBuilder sb = new StringBuilder();
         sb.append(state);
         sb.append(parent == null ? "Has no parent \n" : "Has parent \n");
-        sb.append("Path cost = " + pathCost + "\n");
-        sb.append("Depth = " + depth + "\n");
+        sb.append("Path cost = ").append(pathCost).append("\n");
+        sb.append("Depth = ").append(depth).append("\n");
 
         return sb.toString();
     }
