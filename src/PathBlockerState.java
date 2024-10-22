@@ -157,9 +157,9 @@ public class PathBlockerState extends State {
 
     private PathBlockerState movePlayer(PathAction action) {
 
-        for (int i = 0; i < action.getDistance(); i++) { // Note to emin: You might need to change this for optimization.
-                                                         // Normally i would change this immediately but
-                                                         // I might break the code so you should check this out.
+        int distance = action.getDistance(); // moved function call outside loop
+        for (int i = 0; i < distance; i++) {
+
             // Mark current tile as visited (wall)
             matrix[playerY][playerX] = 1;
 
@@ -202,9 +202,9 @@ public class PathBlockerState extends State {
     public State undoAction(Action action) {
         if (action instanceof PathAction pathAction) {
 
-            for (int i = 0; i < pathAction.getDistance(); i++) {  // Note to emin: You might need to change this for optimization.
-                                                                  // Normally i would change this immediately but
-                                                                  // I might break the code so you should check this out.
+            int distance = pathAction.getDistance(); // moved function call outside loop
+            for (int i = 0; i < distance; i++) {
+
                 // Unmark visited tile (make it empty again)
                 matrix[playerY][playerX] = 0;
 
