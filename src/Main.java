@@ -93,7 +93,7 @@ public class Main {
             Path path = Paths.get(directoryPath);
 
             if (!Files.exists(path)){ // if directory doesn't exist
-                System.out.println(directoryPath + "\\ directory doesn't exist. It will be created manually.");
+                System.out.println(directoryPath + " doesn't exist. Creating directory...");
                 try {
                     Files.createDirectories(path); // create the directory manually
                     System.out.println("Directory created successfully.");
