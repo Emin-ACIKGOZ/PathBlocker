@@ -141,11 +141,11 @@ public class Main {
                         String temp = "No solution is found!";
                         System.out.println(temp);
                         textToBeSavedAsPng = temp;
-                        PngConverter.saveStringAsImage(textToBeSavedAsPng, pngName.toString(), 1920, 18);
+                        PngConverter.saveStringAsImage(textToBeSavedAsPng, pngName.toString(), 360, 18);
                     } else {
                         System.out.println("Solution step count: " + (solutionSize - 1));
                         textToBeSavedAsPng = initialState.toString();
-                        PngConverter.saveStringAsImage(textToBeSavedAsPng, pngName.toString(), 1920, 18);
+                        PngConverter.saveStringAsImage(textToBeSavedAsPng, pngName.toString(), 360, 18);
 
                         for (int i = 0; i < solutionSize; i++) {
                             textToBeSavedAsPng = "";
