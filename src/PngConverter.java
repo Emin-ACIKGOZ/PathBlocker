@@ -1,8 +1,9 @@
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import javax.imageio.ImageIO;
+
 public class PngConverter {
     private PngConverter() {
         throw new UnsupportedOperationException("Utility class cannot be instantiated");
@@ -35,7 +36,7 @@ public class PngConverter {
         try {
             ImageIO.write(image, "png", new File(fileName));
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
     }
 

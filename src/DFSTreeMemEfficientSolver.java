@@ -1,19 +1,18 @@
-import java.util.*;
+import java.util.List;
+import java.util.Stack;
 
 public class DFSTreeMemEfficientSolver extends Solver {
-    private Stack<Node> frontier = new Stack<Node>();		// open set (fringe)
+    private final Stack<Node> frontier = new Stack<Node>();        // open set (fringe)
 
     private int maximumFrontierSize;
     private int maximumExploredDepth;
 
-    DFSTreeMemEfficientSolver(int depthLimit)
-    {
+    DFSTreeMemEfficientSolver(int depthLimit) {
         super(depthLimit);
     }
 
     @Override
-    List<State> solve(State initialState) throws Exception
-    {
+    List<State> solve(State initialState) throws Exception {
         maximumFrontierSize = 0;
         maximumExploredDepth = 0;
 
@@ -26,7 +25,7 @@ public class DFSTreeMemEfficientSolver extends Solver {
         while (!frontier.isEmpty()) {
             // choose a leaf node and remove it from the frontier
             Node node = frontier.pop();
-            maximumExploredDepth = Math.max(maximumExploredDepth,  node.depth);
+            maximumExploredDepth = Math.max(maximumExploredDepth, node.depth);
 
             // check if the node is a goal state
             if (node.state.isGoal()) {
@@ -35,7 +34,7 @@ public class DFSTreeMemEfficientSolver extends Solver {
 
             if (node.depth < depthLimit) {
                 // expand the chosen node, adding the resulting nodes to the frontier
-                for(Action action : node.state.getActionList()) {
+                for (Action action : node.state.getActionList()) {
                     visitedCount++;
                     State newState = node.state.clone().doAction(action);
                     Node newNode = new Node(newState, action, node);
@@ -64,26 +63,22 @@ public class DFSTreeMemEfficientSolver extends Solver {
     }
 
     @Override
-    int getMaximumFrontierSize()
-    {
+    int getMaximumFrontierSize() {
         return maximumFrontierSize;
     }
 
     @Override
-    int getFrontierSize()
-    {
+    int getFrontierSize() {
         return frontier.size();
     }
 
     @Override
-    int getExploredSize()
-    {
+    int getExploredSize() {
         return 0;
     }
 
     @Override
-    int getMaximumExploredDepth()
-    {
+    int getMaximumExploredDepth() {
         return maximumExploredDepth + 1;
     }
 

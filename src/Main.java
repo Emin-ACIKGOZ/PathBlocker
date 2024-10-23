@@ -1,110 +1,86 @@
-import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.LinkedList;
-import java.util.Queue;
+
+/*
+Project Questions:
+
+1) Why Do You Prefer The Search Algorithm You Chose (DFS Tree Version)?
+
+We chose the DFS Tree version because it’s simple, fast, and memory efficient.
+DFS explores one path deeply before backtracking,
+which saves memory since we only need to keep the current path in the stack,
+unlike BFS, which stores all nodes on the same level.
+
+Additionally, DFS works better for small problems because it can find a solution quickly without exploring all paths.
+However, if the problem size increases significantly,
+DFS may become inefficient due to the risk of missing optimal solutions or getting stuck in long paths.
+In such cases, we would consider switching to a different algorithm,
+like A*, to ensure better performance and optimal solutions.
+
+------------------------------------------------------------------------------------------------------------------------
+2) Can You Achieve The Optimal Result? Why? Why not?
+
+DFS does not guarantee an optimal result as DFS doesn't systematically search all possible paths at the same depth,
+so it might miss the optimal (shortest) path. If a solution is found at a much lower layer first, it will be returned.
+It may not be the shortest path as we do not check each layer for a possible solution like BFS would.
+However, it’s still useful when any valid solution is an acceptable solution.
+
+------------------------------------------------------------------------------------------------------------------------
+3) How Did You Achieve Efficiency In Keeping The States?
+
+We achieved memory efficiency by only keeping the current path in the frontier stack.
+In DFS, we don’t store all the explored nodes like in BFS, which saves memory.
+Once a path reaches a dead-end, DFS simply backtracks and discards those nodes from the stack,
+leaving only the nodes on the current path remaining in memory.
+Also, since cycles do not occur in this game, we don't need an explored set to track visited nodes.
+This makes the algorithm more efficient since we save memory by not needing to keep track of visited nodes.
+
+------------------------------------------------------------------------------------------------------------------------
+4) If You Prefer To Use DFS (Tree Ver.), Do You Need to Avoid Cycles?
+
+We do not need to avoid cycles in our algorithm for this problem.
+The structure of the problem does not have cycles
+as each move will limit the number of possible future moves we can make
+until we either reach the goal or we hit a dead end.
+It’s not possible to obtain an earlier state after making moves,
+as making a move makes it impossible to traverse through the same path.
+Additionally, our implementation of DFS has a depth limit to prevent it from being trapped in a cycle.
+Using DFS with a tree structure for this problem is intuitive and efficient.
+
+For larger matrices we would likely implement an algorithm such as A* that mitigates cycles by avoiding expensive paths.
+The design of our project allows us to choose the appropriate algorithm for the problem we are solving.
+
+------------------------------------------------------------------------------------------------------------------------
+5) What Would Be The Path-Cost For This Problem?
+
+The path-cost for this problem would be the total cost of all the steps taken from the start to the goal.
+We define a step as a full move in a direction,
+and we consider each move to have the same cost as they each use one turn to execute.
+If each step has a cost of one, the total path-cost will simply be the number of steps taken to reach the goal.
+
+Example: If the solution path contains 10 steps, the total path-cost is 10.
+
+If different actions were to have different costs,
+the total path-cost would be the sum of the individual costs for each step along the solution path.
+An example of this would be a solution that demands the smallest distance (spaces in the matrix) traveled.
+
+Example: 1st step 5 units up, 2nd step 3 units left. Total path-cost is 8.
+
+DFS is not guaranteed to return the optimal path.
+If the problem demands the shortest path or an optimal path-cost,
+a more suitable algorithm, such as A*, would be used instead.
+But for smaller problems similar to this one, DFS shows better performance compared to other algorithms.
+*/
 
 public class Main {
     public static void main(String[] args) {
-
         solveAllLevels(10);
-
-
-        // NOTE TO UGUR FROM AZIZ: otuzbir COMMENTED ALL PREVIOUS MAIN
-
-//        PathBlockerState initialState = new PathBlockerState("lvl01.txt");
-////System.out.println("Initial State");
-////System.out.println("-------------");
-////System.out.println(initialState);
-//
-//        String textToBeSavedAsPng = "";
-//        StringBuilder pngName = new StringBuilder("level01/0001.png"); // i will later change the string according to levels
-//
-//        long startTime = System.nanoTime();
-//        Solver solver =
-//                //new BFSTreeSolver(31);                                        // 0.003-0.005
-//                //new BFSGraphSolver(31);                               // 0.005
-//                //new DFSTreeSolver(31);
-//                //new DFSGraphSolver(31);
-//                //new DFSTreeMemEfficientSolver(31);
-//                //new IterativeDeepeningSolver(31);
-//                new IterativeDeepeningRecursiveSolver(31);
-//                //new IterativeDeepeningMemEfficientSolver(31);
-//
-//        try {
-//            List<State> solution = solver.solve(initialState);
-//            long endTime = System.nanoTime();
-//            int solutionSize = solution.size();
-//            if (solution == null || solutionSize == 0) {
-//
-//                String temp = "No solution is found!";
-//                System.out.println("temp");
-//
-//                textToBeSavedAsPng += temp;
-//                PngConverter.saveStringAsImage(textToBeSavedAsPng,pngName.toString(),1920,18);
-//            }
-//            else {
-//                System.out.println("Solution step count : " + (solutionSize - 1));
-//
-//                textToBeSavedAsPng += initialState.toString();
-//                PngConverter.saveStringAsImage(textToBeSavedAsPng,pngName.toString(),1920,18);
-//
-//                // note from ugur to aziz: we might need to
-//                // add the initialState to solution sequence
-//                // but i am not really sure so for now,
-//                // i am converting initial state independently
-//
-//                for (int i = 0; i < solutionSize; i++) {
-//
-//                    textToBeSavedAsPng = "";
-//
-//                    PathBlockerState pathBlockerState = (PathBlockerState) (solution.get(i));
-////System.out.println(pathBlockerState);
-//
-//                    textToBeSavedAsPng += pathBlockerState.toString();
-//
-//                    if (i == 0){
-////System.out.println("  --> Initial state\n");
-//                    }
-//                    else{
-////System.out.println("  --> Step " + i + "\n");
-//
-//                        int pngIndex = i+1;
-//
-//                        if (pngIndex<10){
-//                            pngName.replace(11,12,(pngIndex+""));
-//                        }
-//
-//                        else{
-//                            pngName.replace(10,12,(pngIndex+""));
-//                        }
-//
-//                    }
-//                    PngConverter.saveStringAsImage(textToBeSavedAsPng,pngName.toString(),360,18);
-//                }
-//
-//                System.out.println();
-//                System.out.println("Maximum frontier size : " + solver.getMaximumFrontierSize());
-//                System.out.println("Current frontier size : " + solver.getFrontierSize());
-//                System.out.println("Current explored size : " + solver.getExploredSize());
-//                System.out.println("Visited node count : " + solver.getVisitedCount());
-//
-//                System.out.println();
-//                System.out.println("Maximum explored depth : " + solver.getMaximumExploredDepth());
-//                System.out.println("Time as seconds: " + (endTime - startTime) / 1000000000.0 );
-//
-//            }
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
     }
 
-
-    public static void solveAllLevels(int totalLevels) {
+    public static void solveAllLevels(int numberOfLevels) {
         double totalTime = 0;  // To accumulate total time across levels
         int solvedLevels = 0;  // To track how many levels were solved
 
-        for (int level = 1; level <= totalLevels; level++) {
+        for (int level = 1; level <= numberOfLevels; level++) {
             String levelFileName = String.format("lvl%02d.txt", level); // lvl01.txt, lvl02.txt, ...
             PathBlockerState initialState = new PathBlockerState(levelFileName);
             System.out.println("Solving level: " + levelFileName);
@@ -127,7 +103,6 @@ public class Main {
             for (Solver solver : solvers) {
                 System.out.println("Using solver: " + solver.getClass().getSimpleName());
 
-                System.gc();
                 long startTime = System.nanoTime();
 
                 try {
@@ -176,136 +151,18 @@ public class Main {
                         solvedLevels++;
                     }
                 } catch (Exception e) {
-                    System.out.println("Error during solving with solver " + solver.getClass().getSimpleName());
-                    e.printStackTrace();
+                    System.err.println("Error during solving with solver " + solver.getClass().getSimpleName());
+                    System.err.println(e.getMessage());
                 }
-                System.out.println("------------------------------------");
             }
             System.out.println("=============================================================================");
         }
 
         // Print total and average time at the end
-        System.out.println("Total time for all levels: " + totalTime + " milliseconds");
+        System.out.println("Total time for all levels: " + String.format("%.3f", totalTime) + " milliseconds");
         if (solvedLevels > 0) {
             double averageTime = totalTime / solvedLevels;
-            System.out.println("Average time per solved level: " + averageTime + " milliseconds");
+            System.out.println("Average time per solved level: " + String.format("%.3f", averageTime) + " milliseconds");
         }
     }
-
-
-
-
-    public static void testFromOneEndOfPossibleActions(String filePath, char fromWhere){
-        //WITH BORDER
-        PathBlockerState pbs = new PathBlockerState(filePath);
-        System.out.println(pbs);
-        System.out.println();
-
-        int step = 1;
-        PathBlockerState currentPbs = pbs;
-
-        while (!currentPbs.isGoal()) {  // Continue until the goal is reached
-            System.out.println("Step " + step + ":");
-
-            List<Action> actions = currentPbs.getActionList();
-
-            if (actions.isEmpty()) {
-                System.out.println("No more actions available. Unable to reach the goal.");
-                break;  // Exit if no further actions can be performed
-            }
-
-            if(fromWhere == 's'){
-                currentPbs = (PathBlockerState) currentPbs.doAction(actions.getFirst());
-            }
-            else if(fromWhere == 'l'){
-                currentPbs = (PathBlockerState) currentPbs.doAction(actions.getLast());
-            }
-
-            System.out.println(currentPbs);
-            System.out.println();
-
-            step++;
-        }
-
-        if (currentPbs.isGoal()) {
-            System.out.println("Goal reached!");
-            System.out.println("goal X: " + currentPbs.goalX + " goal Y: "+ currentPbs.goalY );
-            System.out.println("player X: " + currentPbs.playerX + " player Y: "+ currentPbs.playerY );
-        } else {
-            System.out.println("Goal not reached.");
-        }
-
-    }
-
-    // tries each possible action and prints each possible state one by one
-    public static void testEachDirection(String txtPath){
-        PathBlockerState initialPbs = new PathBlockerState(txtPath);
-        System.out.println(initialPbs);
-        System.out.println();
-
-        Queue<PathBlockerState> statesQueue = new LinkedList<>();
-        statesQueue.add(initialPbs);
-
-        int step = 1;
-
-        while (!statesQueue.isEmpty()) {  // Continue until no states remain to process
-            PathBlockerState currentPbs = statesQueue.poll();  // Get the next state from the queue
-            if(currentPbs.isGoal()){
-                System.out.println(currentPbs);
-                System.out.println("success!!!!!!");
-                break;
-            }
-            System.out.println("Step " + step + ":");
-
-            // Get the list of actions available from the current state
-            List<Action> actions = currentPbs.getActionList();
-
-            // Print the number of actions available
-            System.out.println("Available actions: " + actions.size());
-            if (actions.isEmpty()) {
-                System.out.println("No more actions available for this state.");
-                continue;  // Move to the next state in the queue
-            }
-
-            // Try all actions in the actions list
-            for (Action action : actions) {
-                System.out.println("Attempting action: " + action);  // Print the current action being tried
-
-                // Clone the current state before applying the action
-                PathBlockerState clonedPbs = null;
-                try {
-                    clonedPbs = (PathBlockerState) currentPbs.clone();
-                } catch (CloneNotSupportedException e) {
-                    throw new RuntimeException(e);
-                }
-
-                if(clonedPbs.isGoal()){
-                    System.out.println(currentPbs);
-                    System.out.println("success!!!!!!");
-                    break;
-                }
-
-                // Apply the action to the cloned state
-                PathBlockerState newPbs = (PathBlockerState) clonedPbs.doAction(action);
-
-                // If the action results in a valid new state
-                if (newPbs != null) {
-                    System.out.println("Action resulted in a new state:");
-                    System.out.println(newPbs);  // Print the new state after applying the action
-                    System.out.println();
-
-                    // Add the new state to the queue to continue exploring its actions
-                    statesQueue.add(newPbs);
-                } else {
-                    System.out.println("Action resulted in an invalid state.");
-                }
-            }
-
-            // Increment the step for the next loop iteration
-            step++;
-        }
-
-        System.out.println("No more states to process.");
-    }
-
 }

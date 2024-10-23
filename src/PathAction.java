@@ -1,5 +1,5 @@
 public class PathAction extends Action {
-    public enum Direction { UP, DOWN, LEFT, RIGHT }
+    public enum Direction {UP, DOWN, LEFT, RIGHT}
 
     private final Direction direction;
     private final int distance;

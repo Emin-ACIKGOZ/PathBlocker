@@ -8,8 +8,7 @@ public class Node implements Comparable<Node> {
     public double pathCost;
     public int depth;
 
-    Node(State state)
-    {
+    Node(State state) {
         this.state = state;
         this.action = null;
         this.parent = null;
@@ -17,8 +16,7 @@ public class Node implements Comparable<Node> {
         this.depth = 0;
     }
 
-    Node(State state, Action action, Node parent)
-    {
+    Node(State state, Action action, Node parent) {
         this.state = state;
         this.action = action;
         this.parent = parent;
@@ -27,8 +25,7 @@ public class Node implements Comparable<Node> {
         this.depth = (parent == null ? 0 : parent.depth + 1);
     }
 
-    Node(State state, Action action, Node parent, double pathCost)
-    {
+    Node(State state, Action action, Node parent, double pathCost) {
         this.state = state;
         this.action = action;
         this.parent = parent;
@@ -38,20 +35,17 @@ public class Node implements Comparable<Node> {
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return state.hashCode();
     }
 
     @Override
-    public boolean equals(Object obj)
-    {
+    public boolean equals(Object obj) {
         if (this == obj) {
             return true;
         }
 
-        if (obj instanceof State) {
-            State state = (State)obj;
+        if (obj instanceof State state) {
             return state.equals(this.state);
         }
 
@@ -59,21 +53,18 @@ public class Node implements Comparable<Node> {
     }
 
     @Override
-    public int compareTo(Node node)
-    {
-        return (int)Math.signum(this.pathCost - node.pathCost);
+    public int compareTo(Node node) {
+        return (int) Math.signum(this.pathCost - node.pathCost);
     }
 
     @Override
-    public String toString()
-    {
-        StringBuilder sb = new StringBuilder();
-        sb.append(state);
-        sb.append(parent == null ? "Has no parent \n" : "Has parent \n");
-        sb.append("Path cost = ").append(pathCost).append("\n");
-        sb.append("Depth = ").append(depth).append("\n");
+    public String toString() {
+        String sb = state +
+                (parent == null ? "Has no parent \n" : "Has parent \n") +
+                "Path cost = " + pathCost + "\n" +
+                "Depth = " + depth + "\n";
 
-        return sb.toString();
+        return sb;
     }
 
 }

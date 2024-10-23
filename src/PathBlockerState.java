@@ -12,15 +12,6 @@ public class PathBlockerState extends State {
     public int goalX, goalY; // Goal position
     private boolean goalReached;
 
-    public PathBlockerState(int[][] matrix, int playerX, int playerY, int goalX, int goalY) {
-        this.matrix = matrix;
-        this.playerX = playerX;
-        this.playerY = playerY;
-        this.goalX = goalX;
-        this.goalY = goalY;
-        this.goalReached = false;
-    }
-
     private PathBlockerState(int[][] matrix, int playerX, int playerY, int goalX, int goalY, boolean goalReached) {
         this.matrix = matrix;
         this.playerX = playerX;
@@ -85,9 +76,18 @@ public class PathBlockerState extends State {
             this.goalReached = false;
 
             //TESTING
-            System.out.println("Matrix size = " + matrix.length +"x"+matrix[0].length);
+            System.out.println("Matrix size: " + matrix.length + "x" + matrix[0].length);
         } catch (FileNotFoundException e) {
-            e.printStackTrace(); // we might change the exception handling logic later
+            // Create default matrix if the file is not found
+            this.matrix = new int[][]{{2, 1, 3}};
+            this.playerX = 0;
+            this.playerY = 0;
+            this.goalX = 2;
+            this.goalY = 0;
+            this.goalReached = false;
+
+            System.err.println("File not found. Default PathBlockerState created.");
+            System.err.println(e.getMessage());
         }
 
     }
@@ -126,19 +126,19 @@ public class PathBlockerState extends State {
         while (true) {
             switch (direction) {
                 case UP:
-                    if (y - 1 >= 0 && matrix[y - 1][x] !=1 ) y--;
+                    if (y - 1 >= 0 && matrix[y - 1][x] != 1) y--;
                     else return distance;
                     break;
                 case DOWN:
-                    if (y + 1 < matrix.length && matrix[y + 1][x]!=1 ) y++;
+                    if (y + 1 < matrix.length && matrix[y + 1][x] != 1) y++;
                     else return distance;
                     break;
                 case LEFT:
-                    if (x - 1 >= 0 && matrix[y][x - 1] !=1 ) x--;
+                    if (x - 1 >= 0 && matrix[y][x - 1] != 1) x--;
                     else return distance;
                     break;
                 case RIGHT:
-                    if (x + 1 < matrix[0].length && matrix[y][x + 1]!=1 ) x++;
+                    if (x + 1 < matrix[0].length && matrix[y][x + 1] != 1) x++;
                     else return distance;
                     break;
             }
@@ -227,7 +227,7 @@ public class PathBlockerState extends State {
             }
 
             matrix[playerY][playerX] = 2; //update player location
-            //this.goalReached = false;
+
             return this;
         }
         return this;
@@ -244,14 +244,13 @@ public class PathBlockerState extends State {
         StringBuilder sb = new StringBuilder();
         for (int[] row : this.matrix) {
             for (int cell : row) {
-                String cellType = "";
-
-                switch (cell){
-                    case 0: cellType = " "; break;
-                    case 1: cellType = "X"; break;
-                    case 2: cellType = "P"; break;
-                    case 3: cellType = "G"; break;
-                }
+                String cellType = switch (cell) {
+                    case 0 -> " ";
+                    case 1 -> "X";
+                    case 2 -> "P";
+                    case 3 -> "G";
+                    default -> "?";
+                };
 
                 sb.append(cellType).append(" ");
             }
