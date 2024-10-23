@@ -105,18 +105,20 @@ public class Main {
             StringBuilder pngName = new StringBuilder(String.format("level%02d/0001.png", level));
             String textToBeSavedAsPng = "";
 
+            int depthLimit = initialState.getDepthLimit();
             // Solver array with all solvers
             Solver[] solvers = {
-                    //new BFSTreeSolver(100000),
-                    //new BFSGraphSolver(31),
-                    //new DFSTreeSolver(31),
-                    //new DFSGraphSolver(31),
-                    new DFSTreeMemEfficientSolver(31),
-                    //new IterativeDeepeningSolver(31),
-                    //new IterativeDeepeningRecursiveSolver(31),
-                    //new IterativeDeepeningMemEfficientSolver(31)
+                    //new BFSTreeSolver(depthLimit),
+                    //new BFSGraphSolver(depthLimit),
+                    //new DFSTreeSolver(depthLimit),
+                    //new DFSGraphSolver(depthLimit),
+                    new DFSTreeMemEfficientSolver(depthLimit),
+                    //new IterativeDeepeningSolver(depthLimit),
+                    //new IterativeDeepeningRecursiveSolver(depthLimit),
+                    //new IterativeDeepeningMemEfficientSolver(depthLimit)
             };
 
+            // This loop solves the levels with each available solver class
             for (Solver solver : solvers) {
                 System.out.println("Using solver: " + solver.getClass().getSimpleName());
 

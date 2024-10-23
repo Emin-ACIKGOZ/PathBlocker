@@ -240,6 +240,16 @@ public class PathBlockerState extends State {
         return new PathBlockerState(cloneMatrix(), playerX, playerY, goalX, goalY, goalReached);
     }
 
+    @Override
+    public int getDepthLimit() {
+        long sum = (long) matrix.length + (long) matrix[0].length;
+        if (sum > Integer.MAX_VALUE) {
+            return Integer.MAX_VALUE;
+        } else {
+            return (int) sum;
+        }
+    }
+
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (int[] row : this.matrix) {

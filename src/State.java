@@ -11,4 +11,6 @@ public abstract class State implements Cloneable {
     abstract public State undoAction(Action action);
 
     abstract public State clone() throws CloneNotSupportedException;
+
+    abstract public int getDepthLimit();
 }
