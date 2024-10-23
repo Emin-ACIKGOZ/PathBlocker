@@ -146,7 +146,6 @@ public class Main {
                         System.out.println("Solution step count: " + (solutionSize - 1));
                         textToBeSavedAsPng = initialState.toString();
                         PngConverter.saveStringAsImage(textToBeSavedAsPng, pngName.toString(), 360, 18);
-
                         for (int i = 0; i < solutionSize; i++) {
                             textToBeSavedAsPng = "";
                             PathBlockerState pathBlockerState = (PathBlockerState) solution.get(i);
