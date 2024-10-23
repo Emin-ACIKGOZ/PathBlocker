@@ -6,13 +6,11 @@ public abstract class Solver {
     protected long visitedCount;
     final int depthLimit;
 
-    Solver()
-    {
+    Solver() {
         depthLimit = Integer.MAX_VALUE;
     }
 
-    Solver(int depthLimit)
-    {
+    Solver(int depthLimit) {
         this.depthLimit = depthLimit;
     }
 
@@ -24,15 +22,13 @@ public abstract class Solver {
 
     abstract int getExploredSize();
 
-    long getVisitedCount()
-    {
+    long getVisitedCount() {
         return visitedCount;
     }
 
     abstract int getMaximumExploredDepth();
 
-    List<State> createSolutionSequence(Node currentNode)
-    {
+    List<State> createSolutionSequence(Node currentNode) {
         List<State> solutionSequence = new ArrayList<State>();
 
         while (currentNode != null) {
