@@ -248,7 +248,17 @@ public class PathBlockerState extends State {
         StringBuilder sb = new StringBuilder();
         for (int[] row : this.matrix) {
             for (int cell : row) {
-                sb.append(cell).append(" ");
+
+                String cellType = "";
+
+                switch (cell){
+                    case 0: cellType = " "; break;
+                    case 1: cellType = "X"; break;
+                    case 2: cellType = "P"; break;
+                    case 3: cellType = "G"; break;
+                }
+
+                sb.append(cellType).append(" ");
             }
             sb.append("\n"); // Add a newline after each row
         }
